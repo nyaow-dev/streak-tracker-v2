@@ -21,7 +21,7 @@ export default function Home() {
         const checkboxes = document.querySelectorAll('.task-check')
         const allDone = Array.from(checkboxes).every(box => box.checked)
 
-        let newStreak = streak = allDone ? streak + 1 : 0
+        let newStreak = allDone ? streak + 1 : 0
         let newTickets = Math.floor(newStreak / 5)
 
         // Save to browser local storage
