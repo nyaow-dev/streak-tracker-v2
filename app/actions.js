@@ -12,8 +12,12 @@ export async function updateStreak(allDone) {
         .eq('id', 1)
         .single();
 
+    console.log('Server fetched the record...');
+
     let newStreak = allDone ? (currentRecord.streak + 1) : 0;
     let newTickets = Math.floor(newStreak / 5);
+
+    console.log('Server is updating the record...');
 
     // 2. Update the database
     const { data, error } = await supabase
