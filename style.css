@@ -1,0 +1,75 @@
+:root {
+  --primary: #c167f5;
+  --success: #2ecc71;
+  --bg: #fcd3e6;
+  --card: #ffffff;
+  --card-shadow: rgb(61, 12, 12, 0.15);
+  --task: #fff2f8;
+  --task-border: #fabdd9;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg);
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+#stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+#stats p {
+  font-weight: bold;
+  color: #666;
+}
+
+#streak-count, #ticket-count {
+  display: block;
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+#app {
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px var(--card-shadow);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.tasks {
+  text-align: left;
+  margin: 20px 0;
+  background: var(--task);
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.tasks label {
+  display: block;
+  padding: 10px 0;
+  border-bottom: 3px dotted var(--task-border);
+  cursor: pointer;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+button:active {
+  transform: scale(0.98);
+}
