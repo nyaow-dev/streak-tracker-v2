@@ -3,7 +3,7 @@
 // Later, we will replace this "mock" database with Supabase
 let mockDatabase = { streak: 0, tickets: 0 };
 
-export async function UpdateStreak(allDone) {
+export async function updateStreak(allDone) {
     console.log("Server is processing the streak...");
 
     // Logic happens on the server now
