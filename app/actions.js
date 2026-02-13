@@ -1,21 +1,35 @@
 'use server' // This marks the file as Server-Side code
 
-// Later, we will replace this "mock" database with Supabase
-let mockDatabase = { streak: 0, tickets: 0 };
+import { supabase } from '@/lib/supabase'
 
 export async function updateStreak(allDone) {
-    console.log("Server is processing the streak...");
+    console.log('Server is processing the streak...');
 
-    // Logic happens on the server now
-    if (allDone) {
-        mockDatabase.streak += 1;
-    } else {
-        mockDatabase.streak = 0;
-    }
+    // 1. Fetch current data (Assuming ID 1 for our single user)
+    const { data: currentRecord } = await supabase
+        .from('progress')
+        .select('streak')
+        .eq('id', 1)
+        .single();
 
-    mockDatabase.tickets = Math.floor(mockDatabase.streak / 5);
+    let newStreak = allDone ? (currentRecord.streak + 1) : 0;
+    let newTickets = Math.floor(newStreak / 5);
 
-    return mockDatabase;
+    // 2. Update the database
+    const { data, error } = await supabase
+        .from('progress')
+        .update({
+            streak: newStreak,
+            tickets: newTickets,
+            updated_at: new Date()
+        })
+        .eq('id', 1)
+        .select()
+        .single();
+
+    if (error) throw new Error(error.message);
+
+    return data; // This goes back to page.js
 }
 
 
