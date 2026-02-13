@@ -32,4 +32,13 @@ export async function updateStreak(allDone) {
     return data; // This goes back to page.js
 }
 
+// Fetch the initial data when the app loads
+export async function getInitialData() {
+    const { data } = await supabase
+        .from('progress')
+        .select('*')
+        .eq('id', 1)
+        .single();
 
+    return data;
+}
