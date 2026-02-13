@@ -1,5 +1,6 @@
 'use client' // This tells Next.js this is an interactive page
 
+import { updateStreak } from './actions'
 import { useState, useEffect } from 'react'
 
 export default function Home() {
@@ -8,27 +9,24 @@ export default function Home() {
     const [tickets, setTickets] = useState(0)
 
     // UseEffect runs once when the page loads (Load from browser local storage)
-    useEffect(() => {
-        const saved = localStorage.getItem('streakData');
-        if (saved) {
-            const parsed = JSON.parse(saved)
-            setStreak(parsed.streak)
-            setTickets(parsed.tickets)
-        }
-    }, [])
+    // useEffect(() => {
+    //     const saved = localStorage.getItem('streakData');
+    //     if (saved) {
+    //         const parsed = JSON.parse(saved)
+    //         setStreak(parsed.streak)
+    //         setTickets(parsed.tickets)
+    //     }
+    // }, [])
 
-    const handleFinishDay = () => {
+    const handleFinishDay = async () => {
         const checkboxes = document.querySelectorAll('.task-check')
         const allDone = Array.from(checkboxes).every(box => box.checked)
 
-        let newStreak = allDone ? streak + 1 : 0
-        let newTickets = Math.floor(newStreak / 5)
+        // Call the Server Action
+        const updatedData = await updateStreak(allDone);
 
-        setStreak(newStreak)
-        setTickets(newTickets)
-
-        // Save to browser local storage
-        localStorage.setItem('streakData', JSON.stringify({ streak: newStreak, tickets: newTickets }));
+        setStreak(updatedData.streak)
+        setTickets(updatedData.tickets)
     }
 
     return (
