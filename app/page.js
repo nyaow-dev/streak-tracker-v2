@@ -11,7 +11,7 @@ export default function Home() {
     useEffect(() => {
         const saved = localStorage.getItem('streakData');
         if (saved) {
-            const parsed = JSON.parse(saved);
+            const parsed = JSON.parse(saved)
             setStreak(parsed.streak)
             setTickets(parsed.tickets)
         }
@@ -23,6 +23,9 @@ export default function Home() {
 
         let newStreak = allDone ? streak + 1 : 0
         let newTickets = Math.floor(newStreak / 5)
+
+        setStreak(newStreak)
+        setTickets(newTickets)
 
         // Save to browser local storage
         localStorage.setItem('streakData', JSON.stringify({ streak: newStreak, tickets: newTickets }));
@@ -37,15 +40,13 @@ export default function Home() {
             </div>
 
             <div className="tasks">
-                <label><input type="checkbox" class="task-check" /> School HW</label>
-                <label><input type="checkbox" class="task-check" /> Spelling</label>
-                <label><input type="checkbox" class="task-check" /> D HW</label>
-                <label><input type="checkbox" class="task-check" /> Piano</label>
+                <label><input type="checkbox" className="task-check" /> School HW</label>
+                <label><input type="checkbox" className="task-check" /> Spelling</label>
+                <label><input type="checkbox" className="task-check" /> D HW</label>
+                <label><input type="checkbox" className="task-check" /> Piano</label>
             </div>
 
             <button onClick={handleFinishDay}>Finish Day</button>
         </div>
     )
 }
-
-
