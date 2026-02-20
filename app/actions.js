@@ -1,56 +1,58 @@
-'use server' // This marks the file as Server-Side code
+"use server"; // This marks the file as Server-Side code
 
-import { supabase } from '@/lib/supabase'
+import { supabase } from "@/lib/supabase";
 
 export async function updateStreak(allDone) {
-    console.log('Server is verifying the current user...');
+  console.log("Server is verifying the current user...");
 
-    const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    if (!user) {
-        throw new Error("Unauthorized! You must be a parent to update streaks.")
-    }
+  if (!user) {
+    throw new Error("Unauthorized! You must be a parent to update streaks.");
+  }
 
-    console.log('Server is processing the streak...');
+  console.log("Server is processing the streak...");
 
-    // 1. Fetch current data (Assuming ID 1 for our single user)
-    const { data: currentRecord } = await supabase
-        .from('progress')
-        .select('streak')
-        .eq('id', 1)
-        .single();
+  // 1. Fetch current data (Assuming ID 1 for our single user)
+  const { data: currentRecord } = await supabase
+    .from("progress")
+    .select("streak")
+    .eq("id", 1)
+    .single();
 
-    console.log('Server fetched the record...');
+  console.log("Server fetched the record...");
 
-    let newStreak = allDone ? (currentRecord.streak + 1) : 0;
-    let newTickets = Math.floor(newStreak / 5);
+  let newStreak = allDone ? currentRecord.streak + 1 : 0;
+  let newTickets = Math.floor(newStreak / 5);
 
-    console.log('Server is updating the record...');
+  console.log("Server is updating the record...");
 
-    // 2. Update the database
-    const { data, error } = await supabase
-        .from('progress')
-        .update({
-            streak: newStreak,
-            tickets: newTickets,
-            updated_at: new Date()
-        })
-        .eq('id', 1)
-        .select()
-        .single();
+  // 2. Update the database
+  const { data, error } = await supabase
+    .from("progress")
+    .update({
+      streak: newStreak,
+      tickets: newTickets,
+      updated_at: new Date(),
+    })
+    .eq("id", 1)
+    .select()
+    .single();
 
-    if (error) throw new Error(error.message);
+  if (error) throw new Error(error.message);
 
-    return data; // This goes back to page.js
+  return data; // This goes back to page.js
 }
 
 // Fetch the initial data when the app loads
 export async function getInitialData() {
-    const { data } = await supabase
-        .from('progress')
-        .select('*')
-        .eq('id', 1)
-        .single();
+  const { data } = await supabase
+    .from("progress")
+    .select("*")
+    .eq("id", 1)
+    .single();
 
-    return data;
+  return data;
 }
