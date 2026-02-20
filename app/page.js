@@ -1,9 +1,39 @@
 'use client' // This tells Next.js this is an interactive page
 
-import { getInitialData, updateStreak } from './actions'
 import { useState, useEffect } from 'react'
+import { supabase } from '@/lib/supabase' // Import the client directly for Auth
+import { getInitialData, updateStreak } from './actions'
 
 export default function Home() {
+    const [user, setUser] = useState(null)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    // 1. Check for active session on load
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setUser(session?.user ?? null)
+        })
+    }, [])
+
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+
+        if (error) alert(error.message)
+        else setUser(data.user)
+    }
+
+    const handleLogout = async (e) => {
+        e.preventDefault()
+        const { error } = await supabase.auth.signOut()
+
+        if (error) {
+            console.error("Error logging out: ", error.message)
+        }
+        else setUser(null)
+    }
+
     // This is how we handle "State" in Next.js/React
     const [streak, setStreak] = useState(0)
     const [tickets, setTickets] = useState(0)
@@ -29,6 +59,21 @@ export default function Home() {
         setTickets(updatedData.tickets)
     }
 
+    if (!user) {
+        return (
+            <div id="app">
+                <h1>Parent Login</h1>
+                <form onSubmit={handleLogin}>
+                    <div className="login">
+                        <input type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+                        <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+        )
+    }
+
     return (
         <div id="app">
             <h1>Streak Tracker</h1>
@@ -45,6 +90,7 @@ export default function Home() {
             </div>
 
             <button onClick={handleFinishDay}>Finish Day</button>
+            <button onClick={handleLogout} className="logout-button">Logout</button>
         </div>
     )
 }

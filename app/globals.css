@@ -27,7 +27,8 @@ body {
   color: #666;
 }
 
-#streak-count, #ticket-count {
+#streak-count,
+#ticket-count {
   display: block;
   font-size: 2rem;
   color: var(--primary);
@@ -41,6 +42,22 @@ body {
   width: 100%;
   max-width: 400px;
   text-align: center;
+}
+
+.login {
+  text-align: left;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.login input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensures padding doesn't increase width */
+  margin: 10px 0 0 0;
 }
 
 .tasks {
@@ -72,4 +89,20 @@ button {
 
 button:active {
   transform: scale(0.98);
+}
+
+.logout-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  background-color: #888;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+.logout-button:hover {
+  color: #ff4d4d;
+  border-color: #ff4d4d;
 }

@@ -3,6 +3,14 @@
 import { supabase } from '@/lib/supabase'
 
 export async function updateStreak(allDone) {
+    console.log('Server is verifying the current user...');
+
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+        throw new Error("Unauthorized! You must be a parent to update streaks.")
+    }
+
     console.log('Server is processing the streak...');
 
     // 1. Fetch current data (Assuming ID 1 for our single user)
