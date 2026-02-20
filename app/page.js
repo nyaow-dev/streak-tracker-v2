@@ -31,7 +31,11 @@ export default function Home() {
         if (error) {
             console.error("Error logging out: ", error.message)
         }
-        else setUser(null)
+        else {
+            setUser(null)
+            setEmail('')
+            setPassword('')
+        }
     }
 
     // This is how we handle "State" in Next.js/React
