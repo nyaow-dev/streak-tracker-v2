@@ -1,7 +1,7 @@
 "use client"; // This tells Next.js this is an interactive page
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase"; // Import the client directly for Auth
+import { supabaseBrowser } from "@/lib/supabase-browser"; // Import the client directly for Auth
 import { useRouter } from "next/navigation";
 import { getInitialData, updateStreak } from "../actions";
 
@@ -12,6 +12,7 @@ export default function DashboardPage() {
 
   // 1. Check for active session on load
   useEffect(() => {
+    const supabase = supabaseBrowser();
     const checkUser = async () => {
       const {
         data: { session },
@@ -33,6 +34,7 @@ export default function DashboardPage() {
 
   const handleLogout = async (e) => {
     e.preventDefault();
+    const supabase = supabaseBrowser();
     const { error } = await supabase.auth.signOut();
 
     if (error) {
