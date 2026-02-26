@@ -1,9 +1,18 @@
-version: '3.3'
-
 services:
-    nextjs-app:
-        image: streak-tracker-v2
-        ports:
-            - "3000:3000"
-        env_file:
-            - .env.local
+  streak-tracker-v2:
+    build:
+      context: ./
+      # Keep build-time args optional — not required now.
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY:-}
+    image: streak-tracker
+    container_name: streak-tracker
+    # Use the project's .env.local at runtime (docker-compose will load it for the service)
+    env_file:
+      - .env.local
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    ports:
+      - "3000:3000"

@@ -4,18 +4,21 @@ FROM node:20-alpine AS base
 # 2. Set the working directory
 WORKDIR /app
 
-# 3. Install dependencies
+# 3. Install dependencies first (so layer can be cached)
 COPY package*.json ./
 RUN npm install
 
-# 4. Copy the rest of your code
+# 4. Copy the rest of your code (do NOT bake NEXT_PUBLIC_ values at build time)
 COPY . .
 
-# 5. Build the Next.js app
-RUN npm run build
+# NOTE:
+# We intentionally DO NOT run `npm run build` at image build time.
+# Instead we build on container start so NEXT_PUBLIC_* environment variables
+# provided at runtime (via docker-compose env_file / environment) are used
+# when Next builds client assets.
 
 # 6. Expose the port (Next.js defaults to 3000)
 EXPOSE 3000
 
-# 7. Start the app
-CMD ["npm", "start"]
+# 7. Build at container start (so runtime envs are available) then start
+CMD ["sh", "-lc", "npm run build && npm start"]
