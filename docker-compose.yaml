@@ -1,13 +1,15 @@
+version: '3.8'
+
 services:
-  streak-tracker-v2:
+  streak-tracker:
     build:
       context: ./
       # Keep build-time args optional — not required now.
       args:
         NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY:-}
-    image: streak-tracker
-    container_name: streak-tracker
+    image: streak-tracker-app
+    container_name: streak-tracker-app
     # Use the project's .env.local at runtime (docker-compose will load it for the service)
     env_file:
       - .env.local
