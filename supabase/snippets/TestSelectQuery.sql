@@ -1,0 +1,1 @@
+select streak from progress where id = 1
