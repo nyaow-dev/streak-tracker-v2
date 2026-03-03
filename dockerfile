@@ -1,15 +1,37 @@
 # 1. Use the official Node.js image as the "Kitchen"
-FROM node:20-alpine AS base
+ARG NODE_VERSION=24.13.0-slim
+# ARG NODE_VERSION=20-alpine
+
+FROM node:${NODE_VERSION} AS base
 
 # 2. Set the working directory
 WORKDIR /app
 
 # 3. Install dependencies first (so layer can be cached)
-COPY package*.json ./
-RUN npm install
+COPY package.json package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
-# 4. Copy the rest of your code (do NOT bake NEXT_PUBLIC_ values at build time)
+# 3a. Use pnpm for faster installs and better caching
+
+# 4. Build
+FROM node:${NODE_VERSION} AS builder
+
+# Set working directory
+WORKDIR /app
+
 COPY . .
+RUN npm install -g pnpm
+RUN pnpm install
+RUN pnpm build
+
+# 5. Final image 
+FROM node:${NODE_VERSION} AS runner
+
+# Set working directory
+WORKDIR /app
+
+# Copy standalone build output 
+COPY --from=builder /app/.next/standalone ./ 
+COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
 # NOTE:
 # We intentionally DO NOT run `npm run build` at image build time.
@@ -21,4 +43,5 @@ COPY . .
 EXPOSE 3000
 
 # 7. Build at container start (so runtime envs are available) then start
-CMD ["sh", "-lc", "npm run build && npm start"]
+# CMD ["sh", "-lc", "npm run build && npm start"]
+CMD ["node", "server.js"]
