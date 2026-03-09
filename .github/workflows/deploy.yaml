@@ -1,0 +1,36 @@
+# .github/workflows/deploy.yml - Deploy to Cloud Run on push to main
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+# Required for Workload Identity Federation
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out the repository code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Authenticate to GCP using Workload Identity Federation
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/687758851667/locations/global/workloadIdentityPools/github-pool/provide/github-provider"
+          service_account: "github-deployer@project-8e09247f-10d3-4254-8e1.iam.gserviceaccount.com"
+
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Deploy to Cloud Run with Docker Compose
+        run: |
+          gcloud beta run compose up compose.yaml --project=project-8e09247f-10d3-4254-8e1 --region=asia-southeast1 --allow-unauthenticated
+        # Replace YOUR-PROJECT-ID and region
