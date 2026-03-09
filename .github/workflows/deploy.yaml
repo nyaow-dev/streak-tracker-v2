@@ -30,6 +30,10 @@ jobs:
       - name: Set up Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v2'
 
+      - name: Install Google Cloud beta components
+        run: |-
+          gcloud components install beta --quiet
+
       - name: Deploy to Cloud Run with Docker Compose
         run: |
           gcloud beta run compose up compose.yaml --project=project-8e09247f-10d3-4254-8e1 --region=asia-southeast1 --allow-unauthenticated
