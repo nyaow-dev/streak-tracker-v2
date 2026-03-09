@@ -1,15 +1,10 @@
-// next.config.mjs
+// @ts-check
 
-/**
- * @type {import('next').NextConfig}
- */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
+  /* config options here */
   // Add this line to enable the standalone output
   output: "standalone",
-
-  // You can add other Next.js configurations here
-  // reactStrictMode: true,
-  // ... other options
-};
-
-export default nextConfig;
+}
+ 
+module.exports = nextConfig
