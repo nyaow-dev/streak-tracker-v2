@@ -27,6 +27,7 @@ jobs:
           workload_identity_provider: "projects/687758851667/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
           service_account: "github-deployer@project-8e09247f-10d3-4254-8e1.iam.gserviceaccount.com"
 
+      # Set up gcloud CLI
       - name: Set up Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v2'
 
@@ -34,7 +35,11 @@ jobs:
         run: |-
           gcloud components install beta --quiet
 
+      # Configure Docker to use gcloud for authentication
+      - name: Configure Docker
+        run: gcloud auth configure-docker asia-southeast1-docker.pkg.dev
+
+      # Deploy to Cloud Run
       - name: Deploy to Cloud Run with Docker Compose
         run: |
           gcloud beta run compose up compose.yaml --project=project-8e09247f-10d3-4254-8e1 --region=asia-southeast1 --allow-unauthenticated
-        # Replace YOUR-PROJECT-ID and region
