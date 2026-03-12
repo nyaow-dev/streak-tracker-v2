@@ -12,8 +12,9 @@ export default function DashboardPage() {
 
   // 1. Check for active session on load
   useEffect(() => {
+    // 1. The main refresh logic
     const supabase = supabaseBrowser();
-    const checkUser = async () => {
+    const refresh = async () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -29,7 +30,31 @@ export default function DashboardPage() {
         }
       }
     };
-    checkUser();
+
+    // 2. Initial Run
+    refresh();
+
+    // 3. Event Listener: Refresh when user clicks back into the tab
+    const handleFocus = () => {
+      console.log("Tab focused, refreshing data...");
+      refresh();
+    };
+    window.addEventListener("focus", handleFocus);
+
+    // 4. Timer: Slow poll every 5 minutes to catch changes from other devices
+    const intervalId = setInterval(
+      () => {
+        console.log("Polling for updates...");
+        refresh();
+      },
+      5 * 60 * 1000,
+    );
+
+    // 5. Cleanup
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      clearInterval(intervalId);
+    };
   }, [router]);
 
   const handleLogout = async (e) => {
