@@ -11,6 +11,10 @@ permissions:
   contents: read
   id-token: write
 
+env:
+  PROJECT_ID: project-8e09247f-10d3-4254-8e1
+  REGION: asia-southeast1
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -25,7 +29,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: "projects/687758851667/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
-          service_account: "github-deployer@project-8e09247f-10d3-4254-8e1.iam.gserviceaccount.com"
+          service_account: "github-deployer@${{ env.PROJECT_ID }}.iam.gserviceaccount.com"
 
       # Set up gcloud CLI
       - name: Set up Cloud SDK
@@ -37,9 +41,9 @@ jobs:
 
       # Configure Docker to use gcloud for authentication
       - name: Configure Docker
-        run: gcloud auth configure-docker asia-southeast1-docker.pkg.dev
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
       # Deploy to Cloud Run
       - name: Deploy to Cloud Run with Docker Compose
         run: |
-          gcloud beta run compose up compose.yaml --project=project-8e09247f-10d3-4254-8e1 --region=asia-southeast1 --allow-unauthenticated
+          gcloud beta run compose up compose.yaml --project=${{ env.PROJECT_ID }} --region=${{ env.REGION }} --allow-unauthenticated
