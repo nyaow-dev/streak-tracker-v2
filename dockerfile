@@ -20,7 +20,7 @@ WORKDIR /app
 
 COPY . .
 RUN npm install -g pnpm
-RUN pnpm install
+RUN pnpm install --dangerously-allow-all-builds
 RUN pnpm build
 
 # 5. Final image 
