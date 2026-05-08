@@ -81,13 +81,13 @@ Steps: <https://gist.github.com/nilesh/b69b751e5cfd20e04d124a09ca4c14eb>
 
 ## Links
 
-1. **Google Cloud App link**: <https://streak-tracker-v2-687758851667.asia-southeast1.run.app/>
+1. **Google Cloud App link**: <https://streak-tracker-v2-687758851667.us-west1.run.app/>
 
 2. **Local Nextjs App link**: <http://localhost:3000/>
 
 3. **Vercel**: <https://vercel.com/nyaow-devs-projects/streak-tracker-v2/3NVbUvyXk5bXa8bXPrWLt4rjnouQ>
 
-4. **Cloud Run Service dashboard**: <https://console.cloud.google.com/run/detail/asia-southeast1/streak-tracker-v2/observability/metrics?project=project-8e09247f-10d3-4254-8e1>
+4. **Cloud Run Service dashboard**: <https://console.cloud.google.com/run/detail/us-west1/streak-tracker-v2/observability/metrics?project=project-8e09247f-10d3-4254-8e1>
 
 5. **Cloud Supabase**: <https://supabase.com/dashboard/project/rgixhlupujlczzvhpudt>
 

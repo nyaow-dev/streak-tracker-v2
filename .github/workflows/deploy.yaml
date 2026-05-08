@@ -13,7 +13,7 @@ permissions:
 
 env:
   PROJECT_ID: project-8e09247f-10d3-4254-8e1
-  REGION: asia-southeast1
+  REGION: us-west1
 
 jobs:
   deploy:
